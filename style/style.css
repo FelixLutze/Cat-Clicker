@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* styling cats */
+.cat-container {
+    text-align: center;
+}
+
+.cat-container h1 {
+    margin: 10px 0;
+}
+
+.cat-container img {
+    width: 50%;
+}
+
+/* styling score */
+.score {
+    display: block;
+    font-size: 1.5em;
+    margin: 10px;
+}
