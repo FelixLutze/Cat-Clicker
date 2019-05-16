@@ -38,8 +38,6 @@ for (const newCat in allCats) {
 
     const newCatSelection = document.createElement("a");
     newCatSelection.textContent = allCats[newCat].name;
-
-    const newCurrentCat = allCats[newCat].name;
     
     newCatSelection.addEventListener('click', function() {
         for (catContainer of container.children) {
