@@ -23,6 +23,8 @@ body {
 .cat-container img {
     width: 50%;
     height: 65%;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
 }
 
 /* STYLING SCORE */
