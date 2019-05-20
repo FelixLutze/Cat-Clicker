@@ -1,102 +1,132 @@
-const container = document.querySelector(".container");
-const displayScores = document.querySelectorAll(".display-score");
-const dropdown = document.querySelector(".dropdown-content");
+/* ===== Model ===== */
 
-//defining all cats
-const allCats = {
-    cat1 : {
-        name: "Garfield",
-        counter: 0,
-        img: "https://live.staticflickr.com/1126/625069434_db86b67df8_b.jpg",
+var model = {
+    activeCat : null,
+
+    //defining all cats
+    allCats : [
+        {
+            name: "Garfield",
+            counter: 0,
+            img: "https://live.staticflickr.com/1126/625069434_db86b67df8_b.jpg",
+        },
+        {
+            name: "Diego",
+            counter: 0,
+            img: "https://live.staticflickr.com/2298/2290467335_d4fd0b3bd7_o_d.jpg",
+        },
+        {
+            name: "Teddy",
+            counter: 0,
+            img: "https://live.staticflickr.com/7073/7190755946_ea97e85765_b.jpg",
+        },
+        {
+            name: "Jasper",
+            counter: 0,
+            img: "https://live.staticflickr.com/4733/27257168879_464200ea90_b.jpg",
+        },
+        {
+            name: "Pepper",
+            counter: 0,
+            img: "https://live.staticflickr.com/1204/1090235720_da0ca9dc95_z.jpg",
+        }
+    ]
+};
+
+/* ===== Octopus ===== */
+
+var octopus = {
+    init: function() {
+        model.activeCat = model.allCats[0];
+
+        //initializing cat view
+        catSelection.init();
+        view.init();
     },
-    cat2 : {
-        name: "Diego",
-        counter: 0,
-        img: "https://live.staticflickr.com/2298/2290467335_d4fd0b3bd7_o_d.jpg",
+
+    getAllCats : function() {
+        return model.allCats;
     },
-    cat3 : {
-        name: "Teddy",
-        counter: 0,
-        img: "https://live.staticflickr.com/7073/7190755946_ea97e85765_b.jpg",
+
+    getActiveCat: function() {
+        return model.activeCat;
     },
-    cat4 : {
-        name: "Jasper",
-        counter: 0,
-        img: "https://live.staticflickr.com/4733/27257168879_464200ea90_b.jpg",
+
+    //updates current cat
+    setActiveCat : function(cat) {
+        model.activeCat = cat;
     },
-    cat5 : {
-        name: "Pepper",
-        counter: 0,
-        img: "https://live.staticflickr.com/1204/1090235720_da0ca9dc95_z.jpg",
+
+    incrementCounter: function(){
+        model.activeCat.counter++;
+        view.render();
     }
 };
 
-//adding each cat to the document
-for (const newCat in allCats) {
+/* ===== View ===== */
 
-    /* GENERATING CAT SELECTION */
+var view = {
+    init : function() {
+        //selecting needed DOM elements
+        this.catContainer = document.querySelector(".cat-container");
+        this.catName = document.querySelector(".cat-name");
+        this.catImage = document.querySelector(".cat-img");
+        this.catCounter = document.querySelector(".cat-counter");
 
-    const newCatSelection = document.createElement("a");
-    newCatSelection.textContent = allCats[newCat].name;
-    
-    newCatSelection.addEventListener('click', function() {
-        for (catContainer of container.children) {
-            catContainer.style.display = "none";
+        //adding an event listener to the cat's img
+        this.catImage.addEventListener('click', function(){
+            octopus.incrementCounter();
+        });
+
+        //render/updating view
+        this.render()
+    },
+
+    render : function() {
+        //updating variables
+        var activeCat = octopus.getActiveCat();
+        this.catCounter.textContent = activeCat.counter;
+        this.catName.textContent = activeCat.name;
+        this.catImage.src = activeCat.img;
+    }
+};
+
+/* ===== cat selection ===== */
+
+var catSelection = {
+    init: function() {
+        this.dropdownContent = document.querySelector(".dropdown-content");
+
+        //creating selection for the dropdown menu
+        this.render();
+    },
+
+    //adding every single cat to the selection
+    render: function() {
+        for(i = 0; i < model.allCats.length; i++) {
+            cat = model.allCats[i];
+            
+            const newCatSelection = document.createElement("a");
+            newCatSelection.textContent = cat.name;
+
+            newCatSelection.addEventListener('click', (function(catCopy) {
+                return function() {
+                    octopus.setActiveCat(catCopy);
+                    view.render();
+                };
+            })(cat));
+
+            //adding the current selection to the dropdown menu
+            this.dropdownContent.appendChild(newCatSelection);
         }
+    }
+};
 
-        newCatContainer.style.display = "block";
-    });
-
-    dropdown.appendChild(newCatSelection);
-
-    /* GENERATING CATS */
-
-    //creating the cat's container
-    const newCatContainer = document.createElement("div");
-    newCatContainer.classList.add("cat-container");
-    newCatContainer.style.display = "none";
-
-    //creating a header to display the name of the cat
-    const newCatName = document.createElement("h1");
-    newCatName.textContent = allCats[newCat].name;
-    //adding the header to the container
-    newCatContainer.appendChild(newCatName);
-
-    //creating a score-text for the cat
-    const newCatScore = document.createElement("span");
-    newCatScore.classList.add("score");
-    newCatScore.textContent = "Counter: ";
-    //adding the score-text to the container
-    newCatContainer.appendChild(newCatScore);
-
-    //creating a scorec-ounter for the cat
-    const newCatScoreCounter = document.createElement("span");
-    newCatScoreCounter.classList.add("display-score");
-    newCatScoreCounter.textContent = allCats[newCat].counter;
-    //adding the score-counter to the score-text
-    newCatScore.appendChild(newCatScoreCounter);
-
-    //get the image for the cat
-    const newCatImg = document.createElement("img");
-    newCatImg.classList.add("cat-img");
-    newCatImg.src = allCats[newCat].img;
-    
-    //adding an event listener to the cat's img
-    newCatImg.addEventListener('click', function() {
-        allCats[newCat].counter++;
-
-        //updating counter
-        newCatScoreCounter.textContent = allCats[newCat].counter;
-    });
-
-    //adding img to container
-    newCatContainer.appendChild(newCatImg);
-
-    //adding the whole container to the document
-    container.appendChild(newCatContainer);
-}
+//start everything
+octopus.init();
 
 
+/* -------------------------------------------------------------------------- */
 /* DROPDOWN BUTTON FROM https://www.w3schools.com/howto/howto_js_dropdown.asp */
 /* When the user clicks on the button, 
 toggle between hiding and showing the dropdown content */
