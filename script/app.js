@@ -39,7 +39,8 @@ var octopus = {
     init: function() {
         model.activeCat = model.allCats[0];
 
-        //initializing cat view
+        //initializing admin menu, cat selection, view
+        adminMenu.init();
         catSelection.init();
         view.init();
     },
@@ -76,6 +77,8 @@ var view = {
         //adding an event listener to the cat's img
         this.catImage.addEventListener('click', function(){
             octopus.incrementCounter();
+
+            adminMenu.render();
         });
 
         //render/updating view
@@ -91,6 +94,70 @@ var view = {
     }
 };
 
+/* ===== admin menu ===== */
+
+var adminMenu = {
+    init : function() {
+        //DOM elements for the admin menu
+        this.menuContainer = document.querySelector(".menu-container");
+        this.menuShow = document.querySelector(".menu-show");
+        this.menu = document.querySelector(".menu");
+        this.name = document.querySelector(".menu-name");
+        this.img = document.querySelector(".menu-img");
+        this.clicks = document.querySelector(".menu-clicks");
+        this.updateCat = document.querySelector(".menu-update");
+        this.cancel = document.querySelector(".menu-cancel");
+        
+        //open admin menu
+        this.menuShow.addEventListener('click', function() {
+            adminMenu.open();
+        });
+
+        //closing admin menu and discard changes
+        this.cancel.addEventListener('click', function() {
+            adminMenu.close();
+        });
+
+        //updating cat based on the input fields in the menu
+        this.updateCat.addEventListener('click', function() {
+            adminMenu.update();
+        });
+
+        this.render();
+    },
+
+    render : function() {
+        var activeCat = octopus.getActiveCat();
+
+        this.name.value = activeCat.name;
+        this.img.value = activeCat.img;
+        this.clicks.value = activeCat.counter;
+    },
+
+    open : function() {
+        this.render();
+
+        this.menuContainer.style.display = "block";
+    },
+
+    close : function() {
+        this.render();
+
+        this.menuContainer.style.display = "none";
+    },
+
+    update : function() {
+        var activeCat = octopus.getActiveCat();
+
+        activeCat.name = this.name.value
+        activeCat.img = this.img.value
+        activeCat.counter = this.clicks.value
+
+        view.render();
+        catSelection.render();
+    }
+}
+
 /* ===== cat selection ===== */
 
 var catSelection = {
@@ -103,6 +170,14 @@ var catSelection = {
 
     //adding every single cat to the selection
     render: function() {
+        this.childElements = this.dropdownContent.childElementCount
+
+        if(this.childElements > 0) {
+            for(let i = 0; i < this.childElements; i++) {
+                this.dropdownContent.firstElementChild.remove();
+            }
+        }
+
         for(i = 0; i < model.allCats.length; i++) {
             cat = model.allCats[i];
             
@@ -113,6 +188,7 @@ var catSelection = {
                 return function() {
                     octopus.setActiveCat(catCopy);
                     view.render();
+                    adminMenu.render();
                 };
             })(cat));
 
@@ -121,10 +197,6 @@ var catSelection = {
         }
     }
 };
-
-//start everything
-octopus.init();
-
 
 /* -------------------------------------------------------------------------- */
 /* DROPDOWN BUTTON FROM https://www.w3schools.com/howto/howto_js_dropdown.asp */
@@ -147,3 +219,6 @@ function myFunction() {
       }
     }
   }
+
+//start everything
+octopus.init();
