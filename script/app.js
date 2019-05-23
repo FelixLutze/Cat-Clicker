@@ -121,6 +121,7 @@ var adminMenu = {
         //updating cat based on the input fields in the menu
         this.updateCat.addEventListener('click', function() {
             adminMenu.update();
+            adminMenu.close();
         });
 
         this.render();
