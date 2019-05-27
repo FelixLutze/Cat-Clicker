@@ -111,11 +111,15 @@ var adminMenu = {
         //open admin menu
         this.menuShow.addEventListener('click', function() {
             adminMenu.open();
+
+            this.style.display = "none";
         });
 
         //closing admin menu and discard changes
         this.closeMenu.addEventListener('click', function() {
             adminMenu.close();
+
+            adminMenu.menuShow.style.display = "inline-block";
         });
 
         //updating cat based on the input fields in the menu

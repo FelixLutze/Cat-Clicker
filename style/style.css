@@ -16,12 +16,16 @@ body {
 
 /* STYLING CATS */
 
+.cat-container {
+  margin: 35px 0;
+}
+
 .cat-name {
   margin: 10px 0;
 }
 
 .cat-img {
-  width: 40%;
+  width: 30%;
   border-radius: 20px;
   box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
 }
