@@ -1,7 +1,7 @@
 # Cat Clicker
-This project is representing a simple Cat clicker game where players can modify the name, image and even the click-counter for each cat.
+This project is representing a simple Cat Clicker game where players can modify the name, image and even the click-counter for each cat.
 
-The cat's click-counter increments when the user starts clicking on the cat's image.
+The cat's click-counter increments whenever the user starts clicking on the cat's image.
 
 ## Getting started
 Try out the live version https://dev.felixlutze.net/cat-clicker/
