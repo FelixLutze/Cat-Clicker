@@ -106,7 +106,7 @@ var adminMenu = {
         this.img = document.querySelector(".menu-img");
         this.clicks = document.querySelector(".menu-clicks");
         this.updateCat = document.querySelector(".menu-update");
-        this.cancel = document.querySelector(".menu-cancel");
+        this.closeMenu = document.querySelector(".menu-close");
         
         //open admin menu
         this.menuShow.addEventListener('click', function() {
@@ -114,14 +114,13 @@ var adminMenu = {
         });
 
         //closing admin menu and discard changes
-        this.cancel.addEventListener('click', function() {
+        this.closeMenu.addEventListener('click', function() {
             adminMenu.close();
         });
 
         //updating cat based on the input fields in the menu
         this.updateCat.addEventListener('click', function() {
             adminMenu.update();
-            adminMenu.close();
         });
 
         this.render();
